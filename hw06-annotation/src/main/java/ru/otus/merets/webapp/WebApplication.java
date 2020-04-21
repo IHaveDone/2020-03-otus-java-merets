@@ -1,4 +1,4 @@
-package ru.otus.merets;
+package ru.otus.merets.webapp;
 
 public class WebApplication {
     private String ip;

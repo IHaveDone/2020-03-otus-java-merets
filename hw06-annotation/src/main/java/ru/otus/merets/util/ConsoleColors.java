@@ -1,4 +1,4 @@
-package ru.otus.merets;
+package ru.otus.merets.util;
 
 public class ConsoleColors {
     // Reset

@@ -1,4 +1,9 @@
-package ru.otus.merets;
+package ru.otus.merets.webapp.test;
+
+import ru.otus.merets.annotation.After;
+import ru.otus.merets.annotation.Before;
+import ru.otus.merets.annotation.Test;
+import ru.otus.merets.webapp.WebApplication;
 
 public class WebApplicationTest {
     private String className;

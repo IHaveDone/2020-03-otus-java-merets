@@ -1,8 +1,12 @@
-package ru.otus.merets;
+package ru.otus.merets.autotest;
 
-import ru.otus.merets.exceptions.TestStarterDefaultConstructorException;
-import ru.otus.merets.exceptions.TestStarterInitFailedException;
-import ru.otus.merets.exceptions.TestStarterRunBeforeException;
+import ru.otus.merets.util.ConsoleColors;
+import ru.otus.merets.annotation.After;
+import ru.otus.merets.annotation.Before;
+import ru.otus.merets.annotation.Test;
+import ru.otus.merets.exception.TestStarterDefaultConstructorException;
+import ru.otus.merets.exception.TestStarterInitFailedException;
+import ru.otus.merets.exception.TestStarterRunBeforeException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

@@ -1,4 +1,4 @@
-package ru.otus.merets;
+package ru.otus.merets.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
