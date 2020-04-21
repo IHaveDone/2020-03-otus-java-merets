@@ -1,5 +1,9 @@
 package ru.otus.merets;
 
+import ru.otus.merets.exceptions.TestStarterDefaultConstructorException;
+import ru.otus.merets.exceptions.TestStarterInitFailedException;
+import ru.otus.merets.exceptions.TestStarterRunBeforeException;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -60,12 +64,13 @@ public class TestStarter {
         }
     }
 
-    private void runAfter(Object testObject) throws TestStarterRunAfterException {
+    private void runAfter(Object testObject) {
         for (Method afterMethod : afterMethods) {
             try {
                 afterMethod.invoke(testObject);
             } catch (Exception e) {
-                throw new TestStarterRunAfterException(String.format("Exception during '%s' afterMethod execution", afterMethod.getName()));
+                System.out.println( String.format(" - method %s failed. If most cases this is not a problem, but you should know about it. Maybe you do something wrong.", afterMethod.getName() ));
+                e.printStackTrace();
             }
         }
     }
@@ -89,40 +94,13 @@ public class TestStarter {
                 System.out.println(ConsoleColors.RED + " --- FAIL " + ConsoleColors.RESET);
                 e.printStackTrace();
             } finally {
-                try {
-                    runAfter(testObject);
-                } catch (TestStarterRunAfterException e) {
-                    System.out.println(String.format( "You have some troubles with afterTest '%s'. We do not think this is a failed error, because test() method has finished successfully", e.getMessage()) );
-                    e.printStackTrace();
-                }
+                runAfter(testObject);
             }
 
         }
         System.out.println(ConsoleColors.BLACK_BOLD + String.format("You run %d tests. %d have finished successfully, %d have finished with errors", testMethods.size(), (testMethods.size() - failedTests), failedTests) + ConsoleColors.RESET);
     }
 
-    public class TestStarterInitFailedException extends Exception {
-        TestStarterInitFailedException(String message) {
-            super(message);
-        }
-    }
 
-    public class TestStarterDefaultConstructorException extends Exception {
-        TestStarterDefaultConstructorException(String message) {
-            super(message);
-        }
-    }
-
-    public class TestStarterRunBeforeException extends Exception {
-        TestStarterRunBeforeException(String message) {
-            super(message);
-        }
-    }
-
-    public class TestStarterRunAfterException extends Exception {
-        TestStarterRunAfterException(String message) {
-            super(message);
-        }
-    }
 
 }
