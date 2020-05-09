@@ -1,16 +1,17 @@
 package ru.otus.merets;
 
 import ru.otus.merets.blackbox.BoxImpl;
-import ru.otus.merets.blackbox.BoxInterface;
+import ru.otus.merets.blackbox.Box;
 import ru.otus.merets.exception.CreateWatcherException;
 import ru.otus.merets.watcher.Watcher;
 
 public class HW09Main {
 
     public static void main(String[] args) throws CreateWatcherException {
+        Watcher watcher = new Watcher<Box>();
+        Box box = new BoxImpl();
+        Box myClass = (Box) watcher.createProxedObject( box );
 
-        Watcher watcher = new Watcher<BoxInterface>();
-        BoxInterface myClass = (BoxInterface) watcher.createMyClass(BoxImpl.class);
 
         myClass.startAction(0, "Security Param");   //Log
         myClass.getStatus(0);                                 //Log

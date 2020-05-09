@@ -5,7 +5,7 @@ import ru.otus.merets.watcher.Log;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BoxImpl implements BoxInterface {
+public class BoxImpl implements Box {
     private Map<Integer, String> matrix;
     public BoxImpl(){
         matrix = new HashMap<>();

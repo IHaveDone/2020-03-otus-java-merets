@@ -9,8 +9,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class InvocationHandlerImpl<T> implements InvocationHandler {
-    private Set<UniqMethod> markedMethods; //a set of marked methods
-    private boolean isAnalyzed; //this means (if it is true) we have already marked all annotated methods
+    /**
+     * a set of marked methods
+     */
+    private Set<UniqMethod> markedMethods;
+    /**
+     * this means (if it is true) we have already marked all annotated methods
+     */
+    private boolean isAnalyzed;
 
     private void findAllAnnotatedMethods() {
         Arrays.stream(this.clazz.getClass().getMethods()).forEach(method -> {
