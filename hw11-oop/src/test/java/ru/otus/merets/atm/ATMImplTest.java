@@ -72,7 +72,7 @@ public class ATMImplTest {
         Assertions.assertEquals(100, myBundleOfMoneyFromATM.getBalance() );
 
         BundleOfMoney myBundleOfMoneyFromATM2 = atm.giveMoney(50900);
-        System.out.println(myBundleOfMoneyFromATM2.toString());
+
         Assertions.assertEquals(50900, myBundleOfMoneyFromATM2.getBalance() );
         Assertions.assertEquals(1000*10+500*10+200*10+100*10+200*5000 - 100 - 50900, atm.getBalance());
     }

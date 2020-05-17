@@ -12,8 +12,8 @@ import ru.otus.merets.banknote.BundleOfMoneyImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ATMImpl implements ATM {
     private List<Cassette> cassetteList;
@@ -35,32 +35,35 @@ public class ATMImpl implements ATM {
         }
     }
 
-    @Override
-    public BundleOfMoney giveMoney(int amount) {
-        BundleOfMoney myBundleOfMoneyFromATM = new BundleOfMoneyImpl();
-        if(getBalance()<amount){
-            throw new NoMoneyATMException(String.format( "You asked too much money. ATM has %d, you asked %d", getBalance(), amount), new Throwable());
-        }
-
-
-        //TODO могут быть кассеты одного типа банкнот, надо удалить дубликаты
+    private Banknote[] getAllBanknoteTypes() {
+        Banknote[] result = {};
         List<Banknote> allBanknoteTypesList = new ArrayList<>();
+
         for (Cassette currentCassette : cassetteList) {
             allBanknoteTypesList.add(currentCassette.getBanknote());
         }
-        Collections.sort(allBanknoteTypesList, new Comparator<Banknote>() {
-            @Override
-            public int compare(Banknote o1, Banknote o2) {
-                return o2.getDenomination() - o1.getDenomination();
-            }
-        });
 
+        List<Banknote> allBanknoteTypesListNoDup = allBanknoteTypesList.stream().distinct().collect(Collectors.toList());
+        Collections.sort(allBanknoteTypesListNoDup, (a,b) -> b.getDenomination()-a.getDenomination() );
+        result = allBanknoteTypesListNoDup.toArray(result);
 
-        for (Banknote currentBanknote : allBanknoteTypesList) {
-            if(amount>=currentBanknote.getDenomination()) {
+        return result;
+    }
+
+    @Override
+    public BundleOfMoney giveMoney(int amount) {
+        BundleOfMoney myBundleOfMoneyFromATM = new BundleOfMoneyImpl();
+        if (getBalance() < amount) {
+            throw new NoMoneyATMException(String.format("You asked too much money. ATM has %d, you asked %d", getBalance(), amount), new Throwable());
+        }
+
+        Banknote[] banknoteTypes = getAllBanknoteTypes();
+
+        for (Banknote currentBanknote : banknoteTypes) {
+            if (amount >= currentBanknote.getDenomination()) {
                 for (Cassette currentCassette : cassetteList) {
                     if (currentCassette.getBanknote().equals(currentBanknote)) {
-                        while (currentCassette.canRemoveBanknote(1) && (amount-currentBanknote.getDenomination()) >= 0) {
+                        while (currentCassette.canRemoveBanknote(1) && (amount - currentBanknote.getDenomination()) >= 0) {
                             currentCassette.removeBanknote(1);
                             amount -= currentBanknote.getDenomination();
                             myBundleOfMoneyFromATM.addBanknotes(currentBanknote, 1);
@@ -69,9 +72,9 @@ public class ATMImpl implements ATM {
                 }
             }
         }
-        if(amount>0){
-            takeMoney( myBundleOfMoneyFromATM );
-            throw new IncorrectAmountException( String.format( "ATM cannot give this amount of money (especially %d)", amount), new Throwable());
+        if (amount > 0) {
+            takeMoney(myBundleOfMoneyFromATM);
+            throw new IncorrectAmountException(String.format("ATM cannot give this amount of money (especially %d)", amount), new Throwable());
         }
 
         return myBundleOfMoneyFromATM;
