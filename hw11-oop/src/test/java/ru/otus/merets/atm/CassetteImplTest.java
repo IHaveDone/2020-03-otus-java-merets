@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.merets.atm.exception.TooMuchMoneyForThisCassetteException;
-import ru.otus.merets.banknote.BanknoteImpl;
+import ru.otus.merets.banknote.Banknotes;
 
 @DisplayName("CaseImpl must ")
 public class CassetteImplTest {
@@ -17,7 +17,7 @@ public class CassetteImplTest {
 
     @BeforeEach
     public void init(){
-        caseFor100 = new CassetteImpl(BanknoteImpl.BANKNOTE_100);
+        caseFor100 = new CassetteImpl(Banknotes.BANKNOTE_100);
         caseFor100.addBanknote( 150 );
     }
 
@@ -53,7 +53,7 @@ public class CassetteImplTest {
     @Test
     @DisplayName(" not take too much money")
     public void notToAddBanknoteTest(){
-        Cassette cassette = new CassetteImpl( BanknoteImpl.BANKNOTE_5000 );
+        Cassette cassette = new CassetteImpl( Banknotes.BANKNOTE_5000 );
         Assertions.assertThrows(TooMuchMoneyForThisCassetteException.class, () -> cassette.addBanknote(999999) );
     }
 }

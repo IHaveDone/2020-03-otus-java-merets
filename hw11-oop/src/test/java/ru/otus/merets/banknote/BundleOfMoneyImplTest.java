@@ -16,7 +16,7 @@ public class BundleOfMoneyImplTest {
     @BeforeEach
     public void init(){
         bundleOfMoney2x100 = new BundleOfMoneyImpl();
-        bundleOfMoney2x100.addBanknotes( BanknoteImpl.BANKNOTE_100, 2 );
+        bundleOfMoney2x100.addBanknotes( Banknotes.BANKNOTE_100, 2 );
     }
 
     @Test
@@ -28,26 +28,26 @@ public class BundleOfMoneyImplTest {
     @Test
     @DisplayName(" return correct amount of certain banknotes")
     public void getNumberOfBanknotes(){
-        Assertions.assertEquals(2, bundleOfMoney2x100.getNumberOfBanknotes( BanknoteImpl.BANKNOTE_100 ));
+        Assertions.assertEquals(2, bundleOfMoney2x100.getNumberOfBanknotes( Banknotes.BANKNOTE_100 ));
     }
 
     @Test
     @DisplayName(" add new banknotes correctly")
     public void addBanknoteTest(){
         BundleOfMoney bundleOfMoney2x100_1x1000 = new BundleOfMoneyImpl();
-        bundleOfMoney2x100_1x1000.addBanknote( BanknoteImpl.BANKNOTE_100 );
-        bundleOfMoney2x100_1x1000.addBanknote( BanknoteImpl.BANKNOTE_100 );
-        bundleOfMoney2x100_1x1000.addBanknote( BanknoteImpl.BANKNOTE_1000 );
+        bundleOfMoney2x100_1x1000.addBanknote( Banknotes.BANKNOTE_100 );
+        bundleOfMoney2x100_1x1000.addBanknote( Banknotes.BANKNOTE_100 );
+        bundleOfMoney2x100_1x1000.addBanknote( Banknotes.BANKNOTE_1000 );
         Assertions.assertEquals( 1200, bundleOfMoney2x100_1x1000.getBalance() );
-        Assertions.assertEquals( 1, bundleOfMoney2x100_1x1000.getNumberOfBanknotes( BanknoteImpl.BANKNOTE_1000 ) );
+        Assertions.assertEquals( 1, bundleOfMoney2x100_1x1000.getNumberOfBanknotes( Banknotes.BANKNOTE_1000 ) );
     }
 
     @DisplayName(" add a bulk of banknotes")
     @Test
     public void addBanknotesTest(){
         BundleOfMoney bundleOfMoney3x500_2x1000 = new BundleOfMoneyImpl();
-        bundleOfMoney3x500_2x1000.addBanknotes(BanknoteImpl.BANKNOTE_500,3);
-        bundleOfMoney3x500_2x1000.addBanknotes(BanknoteImpl.BANKNOTE_1000,2);
+        bundleOfMoney3x500_2x1000.addBanknotes(Banknotes.BANKNOTE_500,3);
+        bundleOfMoney3x500_2x1000.addBanknotes(Banknotes.BANKNOTE_1000,2);
         Assertions.assertEquals(3500, bundleOfMoney3x500_2x1000.getBalance());
     }
 

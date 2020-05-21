@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.merets.atm.exception.IncorrectAmountException;
 import ru.otus.merets.atm.exception.NoMoneyATMException;
-import ru.otus.merets.banknote.BanknoteImpl;
+import ru.otus.merets.banknote.Banknotes;
 import ru.otus.merets.banknote.BundleOfMoney;
 import ru.otus.merets.banknote.BundleOfMoneyImpl;
 
@@ -21,13 +21,13 @@ public class ATMImplTest {
     @BeforeEach
     public void init(){
         atm = new ATMImpl();
-        Cassette cassetteOne100 = new CassetteImpl(BanknoteImpl.BANKNOTE_100);
+        Cassette cassetteOne100 = new CassetteImpl(Banknotes.BANKNOTE_100);
         cassetteOne100.addBanknote(10);
-        Cassette cassetteOne200 = new CassetteImpl(BanknoteImpl.BANKNOTE_200);
+        Cassette cassetteOne200 = new CassetteImpl(Banknotes.BANKNOTE_200);
         cassetteOne200.addBanknote(10);
-        Cassette cassetteOne500 = new CassetteImpl(BanknoteImpl.BANKNOTE_500);
+        Cassette cassetteOne500 = new CassetteImpl(Banknotes.BANKNOTE_500);
         cassetteOne500.addBanknote(10);
-        Cassette cassetteOne1000 = new CassetteImpl(BanknoteImpl.BANKNOTE_1000);
+        Cassette cassetteOne1000 = new CassetteImpl(Banknotes.BANKNOTE_1000);
         cassetteOne1000.addBanknote(10);
         atm.addCassette(cassetteOne100);
         atm.addCassette(cassetteOne200);
@@ -44,7 +44,7 @@ public class ATMImplTest {
     @DisplayName(" upload money via new case")
     @Test
     public void uploadMoneyTest(){
-        Cassette cassette5000 = new CassetteImpl(BanknoteImpl.BANKNOTE_5000);
+        Cassette cassette5000 = new CassetteImpl(Banknotes.BANKNOTE_5000);
         cassette5000.addBanknote(100);
         atm.addCassette(cassette5000);
         Assertions.assertEquals(1000*10+500*10+200*10+100*10+5000*100,atm.getBalance());
@@ -54,8 +54,8 @@ public class ATMImplTest {
     @DisplayName(" take money")
     public void takeMoneyTest(){
         BundleOfMoney myBundleOfMoney = new BundleOfMoneyImpl();
-        myBundleOfMoney.addBanknotes(BanknoteImpl.BANKNOTE_100, 5);
-        myBundleOfMoney.addBanknotes(BanknoteImpl.BANKNOTE_500, 1);
+        myBundleOfMoney.addBanknotes(Banknotes.BANKNOTE_100, 5);
+        myBundleOfMoney.addBanknotes(Banknotes.BANKNOTE_500, 1);
         atm.takeMoney(myBundleOfMoney);
         Assertions.assertEquals(1000*10+500*10+200*10+100*10 + 100*5+500, atm.getBalance());
     }
@@ -63,7 +63,7 @@ public class ATMImplTest {
     @Test
     @DisplayName(" extract some money from the case")
     public void giveMoneyTest(){
-        Cassette cassette5000 = new CassetteImpl(BanknoteImpl.BANKNOTE_5000);
+        Cassette cassette5000 = new CassetteImpl(Banknotes.BANKNOTE_5000);
         cassette5000.addBanknote(200);
         atm.addCassette(cassette5000);
 

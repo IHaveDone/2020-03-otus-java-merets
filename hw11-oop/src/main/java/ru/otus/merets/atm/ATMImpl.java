@@ -35,8 +35,7 @@ public class ATMImpl implements ATM {
         }
     }
 
-    private Banknote[] getAllBanknoteTypes() {
-        Banknote[] result = {};
+    private List<Banknote> getAllBanknoteTypes() {
         List<Banknote> allBanknoteTypesList = new ArrayList<>();
 
         for (Cassette currentCassette : cassetteList) {
@@ -45,9 +44,8 @@ public class ATMImpl implements ATM {
 
         List<Banknote> allBanknoteTypesListNoDup = allBanknoteTypesList.stream().distinct().collect(Collectors.toList());
         Collections.sort(allBanknoteTypesListNoDup, (a,b) -> b.getDenomination()-a.getDenomination() );
-        result = allBanknoteTypesListNoDup.toArray(result);
 
-        return result;
+        return allBanknoteTypesListNoDup;
     }
 
     @Override
@@ -57,7 +55,7 @@ public class ATMImpl implements ATM {
             throw new NoMoneyATMException(String.format("You asked too much money. ATM has %d, you asked %d", getBalance(), amount), new Throwable());
         }
 
-        Banknote[] banknoteTypes = getAllBanknoteTypes();
+        List<Banknote> banknoteTypes = getAllBanknoteTypes();
 
         for (Banknote currentBanknote : banknoteTypes) {
             if (amount >= currentBanknote.getDenomination()) {
