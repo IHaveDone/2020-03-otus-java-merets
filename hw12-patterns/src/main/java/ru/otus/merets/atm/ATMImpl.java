@@ -18,8 +18,26 @@ import java.util.stream.Collectors;
 public class ATMImpl implements ATM {
     private List<Cassette> cassetteList;
 
-    public ATMImpl() {
-        cassetteList = new ArrayList<>();
+    private ATMImpl( List<Cassette> cassetteList ) {
+        if(cassetteList==null) {
+            this.cassetteList = new ArrayList<>();
+        } else {
+            this.cassetteList = cassetteList;
+        }
+    }
+
+    public static class Builder{
+        private final List<Cassette> cassetteList;
+        public Builder(){
+            cassetteList = new ArrayList<>();
+        }
+        public Builder withCassette( Cassette cassette ){
+            cassetteList.add(cassette);
+            return this;
+        }
+        public ATMImpl build(){
+            return new ATMImpl(cassetteList);
+        }
     }
 
     @Override

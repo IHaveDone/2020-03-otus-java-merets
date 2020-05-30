@@ -20,15 +20,12 @@ public class ATMImplTest {
 
     @BeforeEach
     public void init(){
-        atm = new ATMImpl();
-        Cassette cassetteOne100 = new CassetteImpl.Builder(Banknotes.BANKNOTE_100).withSize(10).build();
-        Cassette cassetteOne200 = new CassetteImpl.Builder(Banknotes.BANKNOTE_200).withSize(10).build();
-        Cassette cassetteOne500 = new CassetteImpl.Builder(Banknotes.BANKNOTE_500).withSize(10).build();
-        Cassette cassetteOne1000 = new CassetteImpl.Builder(Banknotes.BANKNOTE_1000).withSize(10).build();
-        atm.addCassette(cassetteOne100);
-        atm.addCassette(cassetteOne200);
-        atm.addCassette(cassetteOne500);
-        atm.addCassette(cassetteOne1000);
+        atm = new ATMImpl.Builder()
+                .withCassette( new CassetteImpl.Builder(Banknotes.BANKNOTE_100).withSize(10).build())
+                .withCassette( new CassetteImpl.Builder(Banknotes.BANKNOTE_200).withSize(10).build())
+                .withCassette( new CassetteImpl.Builder(Banknotes.BANKNOTE_500).withSize(10).build())
+                .withCassette( new CassetteImpl.Builder(Banknotes.BANKNOTE_1000).withSize(10).build())
+                .build();
     }
 
     @Test
@@ -59,7 +56,7 @@ public class ATMImplTest {
     @Test
     @DisplayName(" extract some money from the case")
     public void giveMoneyTest(){
-        Cassette cassette5000 = new CassetteImpl.Builder(Banknotes.BANKNOTE_5000).withSize(100).build();
+        Cassette cassette5000 = new CassetteImpl.Builder(Banknotes.BANKNOTE_5000).withSize(200).build();
         atm.addCassette(cassette5000);
 
         BundleOfMoney myBundleOfMoneyFromATM = atm.giveMoney(100);
