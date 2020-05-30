@@ -17,7 +17,7 @@ public class CassetteImpl implements Cassette {
     public CassetteImpl(Banknote typeOfbanknote) {
         this.typeOfBanknote = typeOfbanknote;
         capacity = 200;
-        bundleOfMoney = new BundleOfMoneyImpl();
+        bundleOfMoney = new BundleOfMoneyImpl.Builder(null).build();
     }
 
     @Override

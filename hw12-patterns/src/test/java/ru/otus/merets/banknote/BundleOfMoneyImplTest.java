@@ -15,8 +15,9 @@ public class BundleOfMoneyImplTest {
 
     @BeforeEach
     public void init(){
-        bundleOfMoney2x100 = new BundleOfMoneyImpl();
-        bundleOfMoney2x100.addBanknotes( Banknotes.BANKNOTE_100, 2 );
+        bundleOfMoney2x100 = new BundleOfMoneyImpl.Builder(null)
+                .withBanknotes(Banknotes.BANKNOTE_100, 2)
+                .build();
     }
 
     @Test
@@ -34,10 +35,10 @@ public class BundleOfMoneyImplTest {
     @Test
     @DisplayName(" add new banknotes correctly")
     public void addBanknoteTest(){
-        BundleOfMoney bundleOfMoney2x100_1x1000 = new BundleOfMoneyImpl();
-        bundleOfMoney2x100_1x1000.addBanknote( Banknotes.BANKNOTE_100 );
-        bundleOfMoney2x100_1x1000.addBanknote( Banknotes.BANKNOTE_100 );
-        bundleOfMoney2x100_1x1000.addBanknote( Banknotes.BANKNOTE_1000 );
+        BundleOfMoney bundleOfMoney2x100_1x1000 = new BundleOfMoneyImpl.Builder(null)
+                .withBanknotes(Banknotes.BANKNOTE_100,2)
+                .withBanknotes(Banknotes.BANKNOTE_1000,1)
+                .build();
         Assertions.assertEquals( 1200, bundleOfMoney2x100_1x1000.getBalance() );
         Assertions.assertEquals( 1, bundleOfMoney2x100_1x1000.getNumberOfBanknotes( Banknotes.BANKNOTE_1000 ) );
     }
@@ -45,9 +46,10 @@ public class BundleOfMoneyImplTest {
     @DisplayName(" add a bulk of banknotes")
     @Test
     public void addBanknotesTest(){
-        BundleOfMoney bundleOfMoney3x500_2x1000 = new BundleOfMoneyImpl();
-        bundleOfMoney3x500_2x1000.addBanknotes(Banknotes.BANKNOTE_500,3);
-        bundleOfMoney3x500_2x1000.addBanknotes(Banknotes.BANKNOTE_1000,2);
+        BundleOfMoney bundleOfMoney3x500_2x1000 = new BundleOfMoneyImpl.Builder(null)
+                .withBanknotes(Banknotes.BANKNOTE_500,3)
+                .withBanknotes(Banknotes.BANKNOTE_1000,2)
+                .build();
         Assertions.assertEquals(3500, bundleOfMoney3x500_2x1000.getBalance());
     }
 

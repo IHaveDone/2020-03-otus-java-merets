@@ -50,7 +50,7 @@ public class ATMImpl implements ATM {
 
     @Override
     public BundleOfMoney giveMoney(int amount) {
-        BundleOfMoney myBundleOfMoneyFromATM = new BundleOfMoneyImpl();
+        BundleOfMoney myBundleOfMoneyFromATM = new BundleOfMoneyImpl.Builder(null).build();
         if (getBalance() < amount) {
             throw new NoMoneyATMException(String.format("You asked too much money. ATM has %d, you asked %d", getBalance(), amount), new Throwable());
         }

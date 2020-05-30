@@ -53,9 +53,10 @@ public class ATMImplTest {
     @Test
     @DisplayName(" take money")
     public void takeMoneyTest(){
-        BundleOfMoney myBundleOfMoney = new BundleOfMoneyImpl();
-        myBundleOfMoney.addBanknotes(Banknotes.BANKNOTE_100, 5);
-        myBundleOfMoney.addBanknotes(Banknotes.BANKNOTE_500, 1);
+        BundleOfMoney myBundleOfMoney = new BundleOfMoneyImpl.Builder(null)
+                .withBanknotes(Banknotes.BANKNOTE_100,5)
+                .withBanknotes(Banknotes.BANKNOTE_500,1)
+                .build();
         atm.takeMoney(myBundleOfMoney);
         Assertions.assertEquals(1000*10+500*10+200*10+100*10 + 100*5+500, atm.getBalance());
     }

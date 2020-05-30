@@ -42,8 +42,26 @@ public class BundleOfMoneyImpl implements BundleOfMoney {
     }
 
 
-    public BundleOfMoneyImpl() {
-        banknoteMap = new HashMap<>();
+    private BundleOfMoneyImpl(Map<Banknote, Integer> banknoteMap) {
+        this.banknoteMap = banknoteMap;
+    }
+
+    public static class Builder{
+        private Map<Banknote, Integer> banknoteMap;
+        public Builder(Map<Banknote, Integer> banknoteMap){
+            if(banknoteMap==null) {
+                this.banknoteMap = new HashMap<>();
+            } else {
+                this.banknoteMap = banknoteMap;
+            }
+        }
+        public Builder withBanknotes(Banknote banknote, int num){
+            banknoteMap.put(banknote, num);
+            return this;
+        }
+        public BundleOfMoneyImpl build(){
+            return new BundleOfMoneyImpl( banknoteMap );
+        }
     }
 
     @Override
