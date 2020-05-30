@@ -5,11 +5,15 @@
 package ru.otus.merets.atm;
 
 import ru.otus.merets.banknote.BundleOfMoney;
+import ru.otus.merets.department.command.Command;
 
 /**
  * ATM amulator
  */
 public interface ATM {
+    public void rollback();
+    public void onCommand(Command command);
+    public int execute();
     /**
      * ATM takes a bundle of money
      * @param bundleOfMoney

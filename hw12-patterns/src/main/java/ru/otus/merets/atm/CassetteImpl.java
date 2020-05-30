@@ -44,6 +44,11 @@ public class CassetteImpl implements Cassette {
     }
 
     @Override
+    public Cassette clone() {
+        return new CassetteImpl.Builder(typeOfBanknote).withCapacity(capacity).withSize(getSize()).build();
+    }
+
+    @Override
     public int getCapacity() {
         return capacity;
     }

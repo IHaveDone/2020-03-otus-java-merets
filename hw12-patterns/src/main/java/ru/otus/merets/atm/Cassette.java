@@ -10,6 +10,7 @@ import ru.otus.merets.banknote.Banknote;
  * Case for an ATM
  */
 public interface Cassette {
+    public Cassette clone();
     /**
      * How many banknotes might be loaded into the cassette
      * @return
