@@ -56,7 +56,9 @@ public class BundleOfMoneyImpl implements BundleOfMoney {
             }
         }
         public Builder withBanknotes(Banknote banknote, int num){
-            banknoteMap.put(banknote, num);
+            if(num>0) {
+                banknoteMap.put(banknote, num);
+            }
             return this;
         }
         public BundleOfMoneyImpl build(){

@@ -17,8 +17,7 @@ public class CassetteImplTest {
 
     @BeforeEach
     public void init(){
-        caseFor100 = new CassetteImpl(Banknotes.BANKNOTE_100);
-        caseFor100.addBanknote( 150 );
+        caseFor100 = new CassetteImpl.Builder(Banknotes.BANKNOTE_100).withSize(150).build();
     }
 
     @DisplayName(" return correct capacity")
@@ -53,7 +52,7 @@ public class CassetteImplTest {
     @Test
     @DisplayName(" not take too much money")
     public void notToAddBanknoteTest(){
-        Cassette cassette = new CassetteImpl( Banknotes.BANKNOTE_5000 );
+        Cassette cassette = new CassetteImpl.Builder( Banknotes.BANKNOTE_5000 ).build();
         Assertions.assertThrows(TooMuchMoneyForThisCassetteException.class, () -> cassette.addBanknote(999999) );
     }
 }

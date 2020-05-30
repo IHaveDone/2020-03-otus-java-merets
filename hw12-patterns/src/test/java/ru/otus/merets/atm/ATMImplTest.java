@@ -21,14 +21,10 @@ public class ATMImplTest {
     @BeforeEach
     public void init(){
         atm = new ATMImpl();
-        Cassette cassetteOne100 = new CassetteImpl(Banknotes.BANKNOTE_100);
-        cassetteOne100.addBanknote(10);
-        Cassette cassetteOne200 = new CassetteImpl(Banknotes.BANKNOTE_200);
-        cassetteOne200.addBanknote(10);
-        Cassette cassetteOne500 = new CassetteImpl(Banknotes.BANKNOTE_500);
-        cassetteOne500.addBanknote(10);
-        Cassette cassetteOne1000 = new CassetteImpl(Banknotes.BANKNOTE_1000);
-        cassetteOne1000.addBanknote(10);
+        Cassette cassetteOne100 = new CassetteImpl.Builder(Banknotes.BANKNOTE_100).withSize(10).build();
+        Cassette cassetteOne200 = new CassetteImpl.Builder(Banknotes.BANKNOTE_200).withSize(10).build();
+        Cassette cassetteOne500 = new CassetteImpl.Builder(Banknotes.BANKNOTE_500).withSize(10).build();
+        Cassette cassetteOne1000 = new CassetteImpl.Builder(Banknotes.BANKNOTE_1000).withSize(10).build();
         atm.addCassette(cassetteOne100);
         atm.addCassette(cassetteOne200);
         atm.addCassette(cassetteOne500);
@@ -44,8 +40,7 @@ public class ATMImplTest {
     @DisplayName(" upload money via new case")
     @Test
     public void uploadMoneyTest(){
-        Cassette cassette5000 = new CassetteImpl(Banknotes.BANKNOTE_5000);
-        cassette5000.addBanknote(100);
+        Cassette cassette5000 = new CassetteImpl.Builder(Banknotes.BANKNOTE_5000).withSize(100).build();
         atm.addCassette(cassette5000);
         Assertions.assertEquals(1000*10+500*10+200*10+100*10+5000*100,atm.getBalance());
     }
@@ -64,8 +59,7 @@ public class ATMImplTest {
     @Test
     @DisplayName(" extract some money from the case")
     public void giveMoneyTest(){
-        Cassette cassette5000 = new CassetteImpl(Banknotes.BANKNOTE_5000);
-        cassette5000.addBanknote(200);
+        Cassette cassette5000 = new CassetteImpl.Builder(Banknotes.BANKNOTE_5000).withSize(100).build();
         atm.addCassette(cassette5000);
 
         BundleOfMoney myBundleOfMoneyFromATM = atm.giveMoney(100);

@@ -14,10 +14,33 @@ public class CassetteImpl implements Cassette {
     private BundleOfMoney bundleOfMoney;
     private int capacity;
 
-    public CassetteImpl(Banknote typeOfbanknote) {
+    private CassetteImpl(Banknote typeOfbanknote, int capacity, int size) {
         this.typeOfBanknote = typeOfbanknote;
-        capacity = 200;
-        bundleOfMoney = new BundleOfMoneyImpl.Builder(null).build();
+        this.capacity = capacity;
+        bundleOfMoney = new BundleOfMoneyImpl.Builder(null).withBanknotes(this.typeOfBanknote,size).build();
+    }
+    public static class Builder{
+        private Banknote typeOfBanknote;
+        private int capacity;
+        private int size;
+        public Builder(Banknote typeOfBanknote){
+            this.typeOfBanknote = typeOfBanknote;
+            capacity = 200;
+            size = 0;
+        }
+
+        public Builder withCapacity(int capacity){
+            this.capacity = capacity;
+            return this;
+        }
+        public Builder withSize(int size){
+            this.size = size;
+            return this;
+        }
+        public CassetteImpl build(){
+            return new CassetteImpl(typeOfBanknote, capacity, size);
+        }
+
     }
 
     @Override
