@@ -6,10 +6,9 @@ package ru.otus.merets.department.command;
 
 import ru.otus.merets.atm.ATM;
 
-public class Rollback implements Command {
+public class Rollback implements Command<Boolean> {
     @Override
-    public int execute(ATM atm) {
-        atm.rollback();
-        return 0;
+    public Boolean execute(ATM atm) {
+        return atm.rollback();
     }
 }

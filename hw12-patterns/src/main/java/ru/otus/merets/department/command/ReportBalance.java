@@ -6,9 +6,9 @@ package ru.otus.merets.department.command;
 
 import ru.otus.merets.atm.ATM;
 
-public class ReportBalance implements Command {
+public class ReportBalance implements Command<Integer> {
     @Override
-    public int execute(ATM atm) {
+    public Integer execute(ATM atm) {
         return atm.getBalance();
     }
 }

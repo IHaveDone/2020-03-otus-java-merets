@@ -4,10 +4,7 @@
 
 package ru.otus.merets.department.command;
 
-
-import ru.otus.merets.atm.ATM;
-
 @FunctionalInterface
-public interface Command<T> {
-    T execute(ATM atm);
+public interface Callback<T> {
+    public void execute(T object);
 }

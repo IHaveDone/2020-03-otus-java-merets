@@ -24,20 +24,19 @@ public class BundleOfMoneyImpl implements BundleOfMoney {
     @Override
     public void removeBanknote(Banknote banknote) {
         if (banknoteMap.containsKey(banknote)) {
-            removeBanknotes(banknote, banknoteMap.get(banknote));
+            if (banknoteMap.get(banknote) > 0) {
+                banknoteMap.put(banknote, banknoteMap.get(banknote) - 1);
+            } else {
+                throw new TooFewMoneyInBundleOfMoneyException("Impossible requirements to remove too many banknotes from this bundle of money", new Throwable());
+            }
         }
     }
 
     @Override
     public void removeBanknotes(Banknote banknote, int number) {
-        if (banknoteMap.containsKey(banknote)) {
-            if (banknoteMap.get(banknote) > number) {
-                banknoteMap.put(banknote, banknoteMap.get(banknote) - number);
-            } else if (banknoteMap.get(banknote) == number) {
-                banknoteMap.remove(banknote);
-            } else {
-                throw new TooFewMoneyInBundleOfMoneyException("Impossible requirements to remove too many banknotes from this bundle of money", new Throwable());
-            }
+        while (number > 0) {
+            removeBanknote(banknote);
+            number--;
         }
     }
 
@@ -46,37 +45,45 @@ public class BundleOfMoneyImpl implements BundleOfMoney {
         this.banknoteMap = banknoteMap;
     }
 
-    public static class Builder{
+    public static class Builder {
         private Map<Banknote, Integer> banknoteMap;
-        public Builder(Map<Banknote, Integer> banknoteMap){
-            if(banknoteMap==null) {
+
+        public Builder(Map<Banknote, Integer> banknoteMap) {
+            if (banknoteMap == null) {
                 this.banknoteMap = new HashMap<>();
             } else {
                 this.banknoteMap = banknoteMap;
             }
         }
-        public Builder withBanknotes(Banknote banknote, int num){
-            if(num>0) {
+
+        public Builder withBanknotes(Banknote banknote, int num) {
+            if (num > 0) {
                 banknoteMap.put(banknote, num);
             }
             return this;
         }
-        public BundleOfMoneyImpl build(){
-            return new BundleOfMoneyImpl( banknoteMap );
+
+        public BundleOfMoneyImpl build() {
+            return new BundleOfMoneyImpl(banknoteMap);
         }
     }
 
     @Override
     public void addBanknote(Banknote banknote) {
-        addBanknotes(banknote, 1);
+        if (banknoteMap.containsKey(banknote)) {
+            int num = banknoteMap.get(banknote) + 1;
+            banknoteMap.put(banknote, num);
+        } else {
+            banknoteMap.put(banknote, 1);
+        }
     }
 
     @Override
     public void addBanknotes(Banknote banknote, int num) {
-        if (banknoteMap.containsKey(banknote)) {
-            num += banknoteMap.get(banknote);
+        while (num > 0) {
+            addBanknote(banknote);
+            num--;
         }
-        banknoteMap.put(banknote, num);
     }
 
     @Override
@@ -105,6 +112,6 @@ public class BundleOfMoneyImpl implements BundleOfMoney {
 
     @Override
     public boolean hasAnotherBanknotes(Banknote banknote) {
-        return banknoteMap.entrySet().stream().filter(e -> e.getKey() != banknote).count() == 0 ? false : true;
+        return banknoteMap.entrySet().stream().filter(e -> e.getKey() != banknote).count() != 0;
     }
 }

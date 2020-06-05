@@ -6,6 +6,7 @@ package ru.otus.merets.department;
 
 import ru.otus.merets.atm.ATM;
 import ru.otus.merets.atm.exception.IncorrectATMInDepartmentException;
+import ru.otus.merets.department.command.Callback;
 import ru.otus.merets.department.command.Command;
 
 import java.util.LinkedList;
@@ -26,9 +27,9 @@ public class Department {
         listeners.remove(atm);
     }
 
-    public void event(Command command) {
+    public void event(Command command, Callback callback) {
         listeners.forEach(listener -> {
-            listener.onCommand(command);
+            callback.execute( listener.onCommand(command) );
         });
     }
 
@@ -40,9 +41,7 @@ public class Department {
         }
     }
 
-    public int run(){
-        return listeners.stream().mapToInt(p->p.execute()).sum();
-    }
+
 
 
 }

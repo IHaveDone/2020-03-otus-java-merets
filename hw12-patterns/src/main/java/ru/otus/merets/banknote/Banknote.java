@@ -9,7 +9,6 @@ package ru.otus.merets.banknote;
  */
 public interface Banknote {
     /**
-     *
      * @return a denomination of the banknote
      */
     public int getDenomination();

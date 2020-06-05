@@ -5,13 +5,13 @@
 package ru.otus.merets.atm.memento;
 
 public class Memento {
-    private State state;
+    private final State state;
 
     public Memento(State state) {
         this.state = state.clone();
     }
 
-    public State getState(){
+    public State getState() {
         return state;
     }
 }

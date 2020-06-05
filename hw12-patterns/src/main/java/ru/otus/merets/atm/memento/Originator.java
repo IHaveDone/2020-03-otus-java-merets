@@ -4,6 +4,8 @@
 
 package ru.otus.merets.atm.memento;
 
+import ru.otus.merets.atm.exception.FailInitStateATMException;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -19,8 +21,12 @@ public class Originator {
     }
 
     public State restoreInitState() {
-        State initState = stack.getLast().getState().clone();
-        stack.clear();
-        return initState;
+        try {
+            State initState = stack.getLast().getState().clone();
+            stack.clear();
+            return initState;
+        } catch (Exception e){
+            throw new FailInitStateATMException("Attempt to restore incorrect state", new Throwable());
+        }
     }
 }

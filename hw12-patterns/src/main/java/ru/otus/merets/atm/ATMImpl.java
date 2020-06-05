@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 
 public class ATMImpl implements ATM {
     private List<Cassette> cassetteList;
-    private Originator originator;
+    private final Originator originator;
 
-    private ATMImpl( List<Cassette> cassetteList ) {
-        if(cassetteList==null) {
+    private ATMImpl(List<Cassette> cassetteList) {
+        if (cassetteList == null) {
             this.cassetteList = new ArrayList<>();
         } else {
             this.cassetteList = cassetteList;
@@ -32,38 +32,38 @@ public class ATMImpl implements ATM {
         originator.saveState(new State(cassetteList));
     }
 
-    public static class Builder{
+    public static class Builder {
         private final List<Cassette> cassetteList;
-        public Builder(){
+
+        public Builder() {
             cassetteList = new ArrayList<>();
         }
-        public Builder withCassette( Cassette cassette ){
+
+        public Builder withCassette(Cassette cassette) {
             cassetteList.add(cassette);
             return this;
         }
-        public ATMImpl build(){
+
+        public ATMImpl build() {
             return new ATMImpl(cassetteList);
         }
     }
 
-    private List<Command> commands = new ArrayList<>();
-
     @Override
-    public void rollback() {
-        State state = originator.restoreInitState();
-        cassetteList = state.getCassetteList();
+    public boolean rollback() {
+        try {
+            State state = originator.restoreInitState();
+            cassetteList = state.getCassetteList();
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public void onCommand(Command command) {
-        commands.add(command);
-    }
-
-    @Override
-    public int execute() {
-        int sum = commands.stream().mapToInt(cmd -> cmd.execute(this) ).sum();
-        commands.clear();
-        return sum;
+    public Object onCommand(Command command) {
+        return command.execute(this);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ATMImpl implements ATM {
         }
 
         List<Banknote> allBanknoteTypesListNoDup = allBanknoteTypesList.stream().distinct().collect(Collectors.toList());
-        Collections.sort(allBanknoteTypesListNoDup, (a,b) -> b.getDenomination()-a.getDenomination() );
+        Collections.sort(allBanknoteTypesListNoDup, (a, b) -> b.getDenomination() - a.getDenomination());
 
         return allBanknoteTypesListNoDup;
     }
@@ -109,7 +109,7 @@ public class ATMImpl implements ATM {
                         while (currentCassette.canRemoveBanknote(1) && (amount - currentBanknote.getDenomination()) >= 0) {
                             currentCassette.removeBanknote(1);
                             amount -= currentBanknote.getDenomination();
-                            myBundleOfMoneyFromATM.addBanknotes(currentBanknote, 1);
+                            myBundleOfMoneyFromATM.addBanknote(currentBanknote);
                         }
                     }
                 }
