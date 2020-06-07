@@ -1,4 +1,4 @@
-package ru.otus.jdbc;
+package ru.otus.merets.jdbc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +32,33 @@ public class DbExecutorImpl<T> implements DbExecutor<T> {
             logger.error(ex.getMessage(), ex);
             throw ex;
         }
+    }
+
+    @Override
+    public long executeUpdate(Connection connection, String sql, List<Object> params, long id) throws SQLException {
+        Savepoint savePoint = connection.setSavepoint("savePointName");
+        try (var pst = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            for (int idx = 0; idx < params.size(); idx++) {
+                pst.setObject(idx + 1, params.get(idx));
+            }
+            pst.setLong(params.size()+1, id);
+            pst.executeUpdate();
+            try (ResultSet rs = pst.getGeneratedKeys()) {
+                rs.next();
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            connection.rollback(savePoint);
+            logger.error(ex.getMessage(), ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    @Deprecated
+    public long executeInsertOrUpdate(Connection connection, String sql, List<Object> params, long id) throws SQLException {
+        logger.error("You are trying to use executeInsertOrUpdate from DBExecutor. Use jdbcMapper");
+        throw new UnsupportedOperationException("You no need to touch this method, just use jdbcMapper.");
     }
 
     @Override

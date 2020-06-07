@@ -1,4 +1,4 @@
-package ru.otus.core.sessionmanager;
+package ru.otus.merets.core.sessionmanager;
 
 public interface SessionManager extends AutoCloseable {
     void beginSession();

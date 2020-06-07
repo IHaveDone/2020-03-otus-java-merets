@@ -1,4 +1,4 @@
-package ru.otus.jdbc.mapper;
+package ru.otus.merets.jdbc.mapper;
 
 public interface EntitySQLMetaData {
     String getSelectAllSql();

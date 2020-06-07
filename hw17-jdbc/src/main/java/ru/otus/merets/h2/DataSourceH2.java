@@ -1,4 +1,4 @@
-package ru.otus.h2;
+package ru.otus.merets.h2;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
