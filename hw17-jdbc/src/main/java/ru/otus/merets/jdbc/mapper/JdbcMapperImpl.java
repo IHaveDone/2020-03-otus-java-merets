@@ -22,6 +22,11 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T> {
     private final EntityClassMetaData<T> entityClassMetaData;
     private final EntitySQLMetaData entitySQLMetaData;
     private final DbExecutor<T> dbExecutor;
+
+    public SessionManagerJdbc getSessionManager() {
+        return sessionManager;
+    }
+
     private final SessionManagerJdbc sessionManager;
 
     public JdbcMapperImpl(DbExecutor<T> dbExecutor, SessionManagerJdbc sessionManager, Class clazz) {
