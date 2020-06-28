@@ -7,4 +7,6 @@ include 'hw09-aop'
 include 'hw11-oop'
 include 'hw12-patterns'
 include 'hw15-serialization'
-include 'hw17-jdbc'
+include 'hw19-hibernate'
+include 'hw19-hibernate'
+
