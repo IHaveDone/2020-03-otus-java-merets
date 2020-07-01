@@ -64,4 +64,15 @@ public class MyCache<K, V> implements HwCache<K, V> {
             logger.warn("Attempt to remove non-existent listener");
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\"count\":");
+        sb.append(cache.size());
+        sb.append(", \"listeners\":\"");
+        sb.append(listeners.size());
+        sb.append("\"}");
+        return sb.toString();
+    }
 }

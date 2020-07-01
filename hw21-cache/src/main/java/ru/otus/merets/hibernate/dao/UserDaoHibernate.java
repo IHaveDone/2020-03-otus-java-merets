@@ -23,6 +23,12 @@ public class UserDaoHibernate implements UserDao {
 
     @Override
     public Optional<User> findById(long id) {
+        //TODO: to remove after cache-homework
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         DatabaseSessionHibernate currentSession = sessionManager.getCurrentSession();
         try {
             return Optional.ofNullable(currentSession.getHibernateSession().find(User.class, id));
