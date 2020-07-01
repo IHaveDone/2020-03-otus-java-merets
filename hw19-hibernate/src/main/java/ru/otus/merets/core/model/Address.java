@@ -28,6 +28,17 @@ public class Address {
     public Address() {
     }
 
+    public void setUser(User user){
+        this.user = user;
+    }
+    public User getUser(){
+        return this.user;
+    }
+
+    public String getStreet(){
+        return this.street;
+    }
+
     @Override
     public String toString() {
         return "Address{" +

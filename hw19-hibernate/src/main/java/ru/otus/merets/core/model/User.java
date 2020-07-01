@@ -31,7 +31,11 @@ public class User {
         this.name = name;
         this.age = age;
         this.phones = phones;
+        phones.stream().forEach(p -> p.setUser(this));
         this.address = address;
+        if(this.address!=null) {
+            this.address.setUser(this);
+        }
     }
 
     private User() {

@@ -29,6 +29,17 @@ public class Phone {
     public Phone() {
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public User getUser(){
+        return this.user;
+    }
+
+    public String getNumber(){
+        return this.number;
+    }
+
     @Override
     public String toString() {
         return "Phone{" +
