@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.otus.merets.cachehw.HwListener;
+import ru.otus.merets.cachehw.MyCache;
 import ru.otus.merets.core.model.Address;
 import ru.otus.merets.core.model.Phone;
 import ru.otus.merets.hibernate.HibernateUtils;
@@ -22,7 +24,15 @@ public class DbServiceDemo {
         SessionManagerHibernate sessionManager = new SessionManagerHibernate(sessionFactory);
 
         var userDao = new UserDaoHibernate(sessionManager);
-        var dbServiceUser = new DbServiceUserImpl(userDao);
+        var myCache = new MyCache<String,User>();
+        myCache.addListener(new HwListener<String, User>() {
+            @Override
+            public void notify(String key, User value, String action) {
+                logger.info("Cash action ({}), object:{}", action, value);
+            }
+        });
+
+        var dbServiceUser = new DbServiceUserImpl(userDao,myCache);
 
         for (int i = 1; i < 1000; i++) {
             User artem = new User.Builder("User#" + i)
@@ -43,17 +53,15 @@ public class DbServiceDemo {
 
         long startTimeCache = System.currentTimeMillis();
         for (int i = 1; i < 100; i++) {
-            Optional<User> loadedUser = dbServiceUser.getUser(Math.round(Math.random() % 1000));
+            long randomNumber = Math.round(Math.random() * 1000);
+            Optional<User> loadedUser = dbServiceUser.getUser(randomNumber);
+            if(loadedUser.isPresent()) {
+                long num = loadedUser.get().getId();
+                logger.info("ID of this User is: {}, num:{}", num, randomNumber);
+            }
         }
         long finishTimeCache = System.currentTimeMillis();
 
-        long startTimeNoCache = System.currentTimeMillis();
-        for (int i = 1; i < 100; i++) {
-            Optional<User> loadedUser = dbServiceUser.getUserNoCache(Math.round(Math.random() % 1000));
-        }
-        long finishTimeNoCache = System.currentTimeMillis();
-
-        logger.info("100 gets without a cache: {} ", finishTimeNoCache - startTimeNoCache);
-        logger.info("100 gets with a cache: {} ", finishTimeCache - startTimeCache);
+        logger.info("100 gets: {} ", finishTimeCache - startTimeCache);
     }
 }

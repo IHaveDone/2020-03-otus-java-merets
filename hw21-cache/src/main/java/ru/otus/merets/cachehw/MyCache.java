@@ -10,23 +10,31 @@ import java.util.WeakHashMap;
 
 public class MyCache<K, V> implements HwCache<K, V> {
     private final Logger logger = LoggerFactory.getLogger(MyCache.class);
-    private final WeakHashMap<K,V> cache = new WeakHashMap<>();
-    private final List<HwListener<K,V>> listeners = new ArrayList<>();
+    private final WeakHashMap<K, V> cache = new WeakHashMap<>();
+    private final List<HwListener<K, V>> listeners = new ArrayList<>();
+
+    private void sendNotification(K key, V value, String action){
+        try{
+            listeners.forEach(p -> p.notify(key, value, action));
+        } catch (Exception e){
+            logger.error("Fail during listeners notification ({},{}, action={}", key,value,action);
+        }
+    }
 
     @Override
     public void put(K key, V value) {
-        listeners.forEach(p->p.notify(key,value, "before put"));
+        sendNotification(key, value, "before put");
         cache.put(key, value);
-        listeners.forEach(p->p.notify(key,value, "after put"));
+        sendNotification(key, value, "after put");
         logger.debug("Key {} was added into the cache with value {}", key, value);
     }
 
     @Override
     public void remove(K key) {
-        if(cache.containsKey(key)){
-            listeners.forEach(p->p.notify(key, cache.get(key) , "before remove"));
+        if (cache.containsKey(key)) {
+            sendNotification(key, cache.get(key), "before remove");
             cache.remove(key);
-            listeners.forEach(p->p.notify(key, null , "after remove"));
+            sendNotification(key, null, "after remove");
         } else {
             logger.warn("Attempt to remove wrong value: {}", key);
         }
@@ -35,10 +43,10 @@ public class MyCache<K, V> implements HwCache<K, V> {
     @Override
     public V get(K key) {
         V value = null;
-        if(cache.containsKey(key)) {
-            listeners.forEach(p->p.notify(key, cache.get(key) , "before get"));
+        if (cache.containsKey(key)) {
+            sendNotification(key, cache.get(key), "before get");
             value = cache.get(key);
-            listeners.forEach(p->p.notify(key, cache.get(key) , "after get"));
+            sendNotification(key, cache.get(key), "after get");
         } else {
             logger.warn("Non-existent values was requested: {}", key);
         }
@@ -47,7 +55,7 @@ public class MyCache<K, V> implements HwCache<K, V> {
 
     @Override
     public void addListener(HwListener<K, V> listener) {
-        if(listener!=null) {
+        if (listener != null) {
             listeners.add(listener);
             logger.debug("New listener was added");
         } else {
@@ -57,7 +65,7 @@ public class MyCache<K, V> implements HwCache<K, V> {
 
     @Override
     public void removeListener(HwListener<K, V> listener) {
-        if(listeners.contains(listener)){
+        if (listeners.contains(listener)) {
             listeners.remove(listener);
             logger.debug("The listener was removed");
         } else {
