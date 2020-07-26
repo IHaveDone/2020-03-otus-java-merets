@@ -19,7 +19,7 @@ import ru.otus.merets.service.UserAuthServiceImpl;
 import ru.otus.merets.server.UsersWebServerWithFilterBasedSecurity;
 
 public class WebServerWithFilterBasedSecurityDemo {
-    private static final int WEB_SERVER_PORT = 8080;
+    private static final int WEB_SERVER_PORT = 8089;
     private static final String TEMPLATES_DIR = "/templates/";
 
     public static void main(String[] args) throws Exception {
@@ -28,33 +28,9 @@ public class WebServerWithFilterBasedSecurityDemo {
         UserDao userDao = new UserDaoHibernate(sessionManager);
 
         var dbServiceUser = new DbServiceUserImpl(userDao, null);
-        User artem = new User.Builder("Artem")
-                .withAge(30)
-                .withPhone("+70001112233")
-                .withPhone("+70001112244")
-                .withAddress("Varshavskoe highway")
-                .withPassword("123456")
-                .build();
-        User elvira = new User.Builder("Elvira")
-                .withAge(30)
-                .withAddress("Varshavskoe highway")
-                .withPassword("123456")
-                .build();
-        User dmitry = new User.Builder("Dmitry")
-                .withAge(4)
-                .withAddress("Varshavskoe highway")
-                .withPassword("123456")
-                .build();
-        User maxim = new User.Builder("Maxim")
-                .withAge(1)
-                .withAddress("Varshavskoe highway")
-                .withPassword("123456")
-                .build();
 
-        dbServiceUser.saveUser( artem );
-        dbServiceUser.saveUser( elvira );
-        dbServiceUser.saveUser( dmitry );
-        dbServiceUser.saveUser( maxim );
+        var dataSet = new FulfillDatabase(dbServiceUser);
+        dataSet.initDatabase();
 
         Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
         TemplateProcessor templateProcessor = new TemplateProcessorImpl(TEMPLATES_DIR);
