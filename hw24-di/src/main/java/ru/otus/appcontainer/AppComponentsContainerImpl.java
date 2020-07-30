@@ -57,14 +57,13 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
                 componentsMap.put(appComponent.name(), appComponent.order());
             }
         }
-        List<String> componentsSorted = componentsMap.entrySet()
+        return componentsMap.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
                 .map((e) -> {
                     return e.getKey();
                 })
                 .collect(Collectors.toList());
-        return componentsSorted;
     }
 
     /**
