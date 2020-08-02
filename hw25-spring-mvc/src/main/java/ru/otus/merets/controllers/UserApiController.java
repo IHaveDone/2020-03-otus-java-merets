@@ -2,6 +2,7 @@ package ru.otus.merets.controllers;
 
 import org.springframework.web.bind.annotation.*;
 
+import ru.otus.merets.core.dto.UserDto;
 import ru.otus.merets.core.model.User;
 import ru.otus.merets.core.service.DBServiceUser;
 
@@ -17,8 +18,8 @@ public class UserApiController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable(name = "id") long id ){
-        return userService.getUser(id).get();
+    public UserDto getUserById(@PathVariable(name = "id") long id ){
+        return new UserDto(userService.getUser(id).get());
     }
 
     @PostMapping
