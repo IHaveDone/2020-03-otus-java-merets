@@ -8,7 +8,6 @@ import ru.otus.appcontainer.api.AppComponentsContainerConfig;
 import ru.otus.config.*;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,12 +33,11 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
      * En: returns new instance of config class
      * Ru: возвращает экземпляр класса с конфигурацией
      *
-     * @param configClass
-     * @param constructor
-     * @return
+     * @param constructor A constructor of config class
+     * @return object of config
      */
-    private Object getNewInstance(Class<?> configClass, Constructor constructor) {
-        Object obj = null;
+    private Object getNewInstance(Constructor<?> constructor) {
+        Object obj;
         try {
             obj = constructor.newInstance();
         } catch (Exception e) {
@@ -50,15 +48,13 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
     }
 
     private Object getNewInstanceViaMethod(Method method, Object obj) {
-        Class[] params = method.getParameterTypes();
-        List<Object> allNecessaryObjects = Arrays
-                .stream(params)
-                .map(p -> getAppComponent(p))
-                .collect(Collectors.toList());
+        Class<?>[] params = method.getParameterTypes();
 
-        Object newInstance = null;
+        Object newInstance;
         try {
-            newInstance = method.invoke(obj, allNecessaryObjects.toArray());
+            newInstance = method.invoke(obj, Arrays
+                    .stream(params)
+                    .map(this::getAppComponent).toArray());
         } catch (Exception e) {
             logger.error("Exception during DI-process.", e);
             throw new DIInitializationException("Exception during DI-process.", e);
@@ -76,7 +72,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
             logger.error("Config class should have the only default constructor");
             throw new TooManyConstructorsInAppConfigException("Too many contructors in config class.  should have only one constructor");
         }
-        Object configClassObject = getNewInstance(configClass, construct[0]);
+        Object configClassObject = getNewInstance(construct[0]);
 
         List<Method> methodListSorted = methods
                 .stream()
@@ -87,7 +83,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         for (Method method : methodListSorted) {
             if (appComponentsByName.containsKey(method.getAnnotation(AppComponent.class).name())) {
                 logger.error("Too many components with the same name.");
-                throw new IncorrectParamsAppComponent(String.format("Too many components with the same name"));
+                throw new IncorrectParamsAppComponent("Too many components with the same name");
             }
             appComponentsByName.put(
                     method.getAnnotation(AppComponent.class).name(),
@@ -106,12 +102,15 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
     @Override
     public <C> C getAppComponent(Class<C> componentClass) {
         for (Map.Entry<String, Object> entry : appComponentsByName.entrySet()) {
-            if (Arrays.asList(entry.getValue().getClass().getInterfaces()).contains(componentClass)) {
+            if (
+                    Arrays.asList(entry.getValue().getClass().getInterfaces()).contains(componentClass)
+                            || entry.getValue().getClass().equals(componentClass)
+            ) {
                 return (C) entry.getValue();
             }
         }
-        logger.error("Can't find component by class {}", componentClass.getClass().getName());
-        throw new NonExistentComponentException(String.format("Can't find component by class %s", componentClass.getClass().getName()));
+        logger.error("Can't find component by class {}", componentClass.getName());
+        throw new NonExistentComponentException(String.format("Can't find component by class %s", componentClass.getName()));
     }
 
     @Override
