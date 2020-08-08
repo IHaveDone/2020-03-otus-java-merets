@@ -50,5 +50,6 @@ tasks.withType(JavaCompile) {
 
 war {
     archiveName 'app.war'
-    from 'src'
+    from 'src/main/java'
+    webInf { from 'src/main/resources/WEB-INF' }
 }
