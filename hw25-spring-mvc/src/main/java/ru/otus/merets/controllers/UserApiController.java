@@ -22,7 +22,7 @@ public class UserApiController {
 
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable(name = "id") long id ){
-        return new UserDto(userService.getUser(id).get());
+        return new UserDto(userService.getUser(id).orElse(null));
     }
 
     @PostMapping

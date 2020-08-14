@@ -3,9 +3,9 @@ package ru.otus.merets.hibernate.dao;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import ru.otus.merets.core.dao.UserDao;
-import ru.otus.merets.core.dao.UserDaoException;
+import org.springframework.stereotype.Repository;
+import ru.otus.merets.core.repository.UserRepository;
+import ru.otus.merets.core.repository.UserDaoException;
 import ru.otus.merets.core.model.User;
 import ru.otus.merets.core.sessionmanager.SessionManager;
 import ru.otus.merets.hibernate.sessionmanager.DatabaseSessionHibernate;
@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
-public class UserDaoHibernate implements UserDao {
-    private static Logger logger = LoggerFactory.getLogger(UserDaoHibernate.class);
+@Repository
+public class UserRepositoryHibernate implements UserRepository {
+    private static Logger logger = LoggerFactory.getLogger(UserRepositoryHibernate.class);
     private final SessionManagerHibernate sessionManager;
 
-    public UserDaoHibernate(SessionManagerHibernate sessionManager) {
+    public UserRepositoryHibernate(SessionManagerHibernate sessionManager) {
         this.sessionManager = sessionManager;
     }
 

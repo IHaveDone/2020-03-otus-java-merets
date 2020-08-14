@@ -7,8 +7,10 @@ public class UserDto {
     public String name;
     public int age;
     public UserDto(User user){
-        this.id = user.getId();
-        this.name = user.getName();
-        this.age = user.getAge();
+        if(user!=null) {
+            this.id = user.getId();
+            this.name = user.getName();
+            this.age = user.getAge();
+        }
     }
 }

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.otus.merets.cachehw.HwCache;
 import ru.otus.merets.cachehw.MyCache;
-import ru.otus.merets.core.dao.UserDao;
+import ru.otus.merets.core.repository.UserRepository;
 import ru.otus.merets.core.model.User;
 
 import java.util.ArrayList;
@@ -16,19 +16,19 @@ import java.util.Optional;
 public class DbServiceUserImpl implements DBServiceUser {
     private static final Logger logger = LoggerFactory.getLogger(DbServiceUserImpl.class);
     private final HwCache<String, User> cache;
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
-    public DbServiceUserImpl(UserDao userDao, MyCache<String, User> cache) {
-        this.userDao = userDao;
+    public DbServiceUserImpl(UserRepository userRepository, MyCache<String, User> cache) {
+        this.userRepository = userRepository;
         this.cache = cache;
     }
 
     @Override
     public long saveUser(User user) {
-        try (var sessionManager = userDao.getSessionManager()) {
+        try (var sessionManager = userRepository.getSessionManager()) {
             sessionManager.beginSession();
             try {
-                var userId = userDao.insertOrUpdate(user);
+                var userId = userRepository.insertOrUpdate(user);
                 sessionManager.commitSession();
                 logger.info("User saved: {}", user);
                 if (cache != null) {
@@ -50,10 +50,10 @@ public class DbServiceUserImpl implements DBServiceUser {
             userOptional = Optional.ofNullable(cache.get(String.valueOf(id)));
         }
         if (userOptional.isEmpty()) {
-            try (var sessionManager = userDao.getSessionManager()) {
+            try (var sessionManager = userRepository.getSessionManager()) {
                 sessionManager.beginSession();
                 try {
-                    userOptional = userDao.findById(id);
+                    userOptional = userRepository.findById(id);
                     sessionManager.commitSession();
                     logger.info("User was read by id: {}", userOptional.orElse(null));
                     if (cache != null) {
@@ -80,10 +80,10 @@ public class DbServiceUserImpl implements DBServiceUser {
      */
     @Override
     public Optional<User> getUserByLoginAndPassword(String login, String password) {
-        try (var sessionManager = userDao.getSessionManager()) {
+        try (var sessionManager = userRepository.getSessionManager()) {
             sessionManager.beginSession();
             try {
-                Optional<User> userOptional = userDao.findByLoginAndPassword(login, password);
+                Optional<User> userOptional = userRepository.findByLoginAndPassword(login, password);
                 sessionManager.commitSession();
                 logger.info("User was read by login: {}", userOptional.orElse(null));
                 return userOptional;
@@ -97,10 +97,10 @@ public class DbServiceUserImpl implements DBServiceUser {
 
     @Override
     public List<User> getAllUsers() {
-        try (var sessionManager = userDao.getSessionManager()) {
+        try (var sessionManager = userRepository.getSessionManager()) {
             sessionManager.beginSession();
             try {
-                List<User> users = userDao.getAllUsers();
+                List<User> users = userRepository.getAllUsers();
                 sessionManager.commitSession();
                 logger.info("Got all users: {}", users.size() );
                 return users;

@@ -1,17 +1,19 @@
-package ru.otus.merets.repositories;
+package ru.otus.merets.core.service;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 import ru.otus.merets.core.model.User;
-import ru.otus.merets.core.service.DBServiceUser;
-import java.util.List;
 
-@Repository
-public class UserRepositoryImpl implements UserRepository {
+@Service
+public class DBInitService {
     private final DBServiceUser dbServiceUser;
 
-    public UserRepositoryImpl(DBServiceUser dbServiceUser) {
+    public DBInitService(DBServiceUser dbServiceUser) {
         this.dbServiceUser = dbServiceUser;
+    }
 
+    @Bean
+    public void initData(){
         User artem = new User.Builder("Artem")
                 .withAge(30)
                 .withPhone("+70001112233")
@@ -38,27 +40,5 @@ public class UserRepositoryImpl implements UserRepository {
         dbServiceUser.saveUser( elvira );
         dbServiceUser.saveUser( dmitry );
         dbServiceUser.saveUser( maxim );
-    }
-
-    @Override
-    public List<User> findAll() {
-        return null;
-    }
-
-    @Override
-    public User save(User user) {
-        dbServiceUser.saveUser(user);
-        return user;
-    }
-
-    @Override
-    public User findById(long id) {
-        return dbServiceUser.getUser(id).orElse(null);
-    }
-
-    @Override
-    public User findByName(String name) {
-        //TODO: это не по имени
-        return dbServiceUser.getUser(1).orElse(null);
     }
 }

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.WeakHashMap;
 
-@Component
 public class MyCache<K, V> implements HwCache<K, V> {
     private final Logger logger = LoggerFactory.getLogger(MyCache.class);
     private final WeakHashMap<K, V> cache = new WeakHashMap<>();
