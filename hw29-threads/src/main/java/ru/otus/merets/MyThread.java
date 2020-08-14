@@ -11,8 +11,8 @@ public class MyThread extends Thread {
     private final String offset;
     private Integer counter = 0;
     private Boolean isUpstairs = true;
-    private static Boolean theFirstStarted = false;
-    private static final Object sharedStarterMonitor = new Object();
+    private static Boolean THE_FIRST_START = false;
+    private static final Object SHARED_STARTER_MONITOR = new Object();
 
     public MyThread(Object monitor, Boolean isStarter, String offset) {
         this.monitor = monitor;
@@ -44,18 +44,18 @@ public class MyThread extends Thread {
     public void run() {
         currentStatus.append(Thread.currentThread().getName()).append(":").append(offset);
 
-        synchronized (sharedStarterMonitor) {
-            if(!theFirstStarted) {
+        synchronized (SHARED_STARTER_MONITOR) {
+            if(!THE_FIRST_START) {
                 if (isStarter) {
-                    sharedStarterMonitor.notifyAll();
-                    theFirstStarted = true;
+                    SHARED_STARTER_MONITOR.notifyAll();
+                    THE_FIRST_START = true;
                 } else {
-                    waitWrapper(sharedStarterMonitor);
+                    waitWrapper(SHARED_STARTER_MONITOR);
                 }
             }
         }
 
-        while (counter > 1 || isUpstairs) {
+        while ( (counter > 1 || isUpstairs) && THE_FIRST_START) {
             change();
             synchronized (monitor) {
                 monitor.notifyAll();
