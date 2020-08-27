@@ -22,7 +22,7 @@ public final class HibernateUtils {
     }
 
     @Bean
-    public static SessionFactory buildSessionFactory() {
+    public SessionFactory buildSessionFactory() {
         String configResourceFileName = "hibernate.cfg.xml";
         Class[] annotatedClasses = {User.class, Phone.class, Address.class};
         Configuration configuration = new Configuration().configure(configResourceFileName);

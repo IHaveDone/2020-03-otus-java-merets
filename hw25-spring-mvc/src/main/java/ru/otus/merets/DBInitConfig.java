@@ -1,18 +1,23 @@
-package ru.otus.merets.core.service;
+package ru.otus.merets;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Configuration;
 import ru.otus.merets.core.model.User;
+import ru.otus.merets.core.service.DBServiceUser;
 
-@Service
-public class DBInitService {
+@Configuration
+public class DBInitConfig {
     private final DBServiceUser dbServiceUser;
 
-    public DBInitService(DBServiceUser dbServiceUser) {
+    public DBInitConfig(DBServiceUser dbServiceUser) {
         this.dbServiceUser = dbServiceUser;
     }
 
-    @Bean
+    @Bean(initMethod = "initData")
+    public DBInitConfig getConfig(){
+        return new DBInitConfig(dbServiceUser);
+    }
+
     public void initData(){
         User artem = new User.Builder("Artem")
                 .withAge(30)

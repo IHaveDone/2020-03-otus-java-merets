@@ -4,22 +4,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
-import org.w3c.dom.ls.LSOutput;
-import ru.otus.merets.cachehw.HwListener;
 import ru.otus.merets.cachehw.MyCache;
 import ru.otus.merets.core.model.User;
-import ru.otus.merets.core.service.DBInitService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @ComponentScan
@@ -58,13 +49,6 @@ public class WebConfig implements WebMvcConfigurer {
         viewResolver.setOrder(1);
         viewResolver.setCharacterEncoding("UTF-8");
         return viewResolver;
-    }
-
-    @Bean
-    public MyCache<String, User> myCache(){
-        MyCache<String,User> myCache = new MyCache<>();
-        myCache.addListener((key, value, action) -> System.out.println(action+" - "+key+":"+value));
-        return myCache;
     }
 
     @Override
