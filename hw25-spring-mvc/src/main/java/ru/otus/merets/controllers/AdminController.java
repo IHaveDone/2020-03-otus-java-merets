@@ -22,9 +22,9 @@ public class AdminController {
     }
 
     @GetMapping
-    public String index(Model model){
+    public String index(Model model) {
         List<User> users = userService.getAllUsers();
-        List<UserDto> usersDto = users.stream().map( u -> new UserDto(u) ).collect(Collectors.toList());
+        List<UserDto> usersDto = users.stream().map(u -> new UserDto(u)).collect(Collectors.toList());
         model.addAttribute("users", usersDto);
         return "users.html";
     }

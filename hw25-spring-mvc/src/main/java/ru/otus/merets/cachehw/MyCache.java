@@ -1,9 +1,7 @@
 package ru.otus.merets.cachehw;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +12,11 @@ public class MyCache<K, V> implements HwCache<K, V> {
     private final WeakHashMap<K, V> cache = new WeakHashMap<>();
     private final List<HwListener<K, V>> listeners = new ArrayList<>();
 
-    private void sendNotification(K key, V value, String action){
-        try{
+    private void sendNotification(K key, V value, String action) {
+        try {
             listeners.forEach(p -> p.notify(key, value, action));
-        } catch (Exception e){
-            logger.error("Fail during listeners notification ({},{}, action={}", key,value,action);
+        } catch (Exception e) {
+            logger.error("Fail during listeners notification ({},{}, action={}", key, value, action);
         }
     }
 

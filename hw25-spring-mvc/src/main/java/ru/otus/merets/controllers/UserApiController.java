@@ -1,6 +1,5 @@
 package ru.otus.merets.controllers;
 
-import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +20,16 @@ public class UserApiController {
     }
 
     @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable(name = "id") long id ){
+    public UserDto getUserById(@PathVariable(name = "id") long id) {
         return new UserDto(userService.getUser(id).orElse(null));
     }
 
     @PostMapping
-    public UserDto saveUser( @RequestBody User user ){
+    public UserDto saveUser(@RequestBody User user) {
         try {
             userService.saveUser(user);
             return new UserDto(user);
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.error("Create user failed. ", e);
         }
         return null;

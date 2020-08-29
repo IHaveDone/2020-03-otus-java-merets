@@ -9,8 +9,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
-import ru.otus.merets.cachehw.MyCache;
-import ru.otus.merets.core.model.User;
 
 @Configuration
 @ComponentScan
