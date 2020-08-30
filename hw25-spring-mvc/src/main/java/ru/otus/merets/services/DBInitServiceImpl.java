@@ -6,7 +6,7 @@ import ru.otus.merets.core.service.DBServiceUser;
 
 @Service
 public class DBInitServiceImpl implements DBInitService {
-    private DBServiceUser dbServiceUser;
+    private final DBServiceUser dbServiceUser;
 
     public DBInitServiceImpl(DBServiceUser dbServiceUser) {
         this.dbServiceUser = dbServiceUser;

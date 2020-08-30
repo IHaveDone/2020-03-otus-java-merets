@@ -15,7 +15,7 @@ public class DBInitConfig {
     }
 
     @Bean(initMethod = "initStorageWithData")
-    public DBInitService getConfig(){
+    public DBInitService dbInitService(){
         return new DBInitServiceImpl(dbServiceUser);
     }
 
